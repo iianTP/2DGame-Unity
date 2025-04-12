@@ -19,13 +19,6 @@ public class PlayerScript : MonoBehaviour
     public float speed;
     public string direction;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         PlayerMovement();
@@ -40,12 +33,10 @@ public class PlayerScript : MonoBehaviour
         //rb.linearVelocity = movement.action.ReadValue<Vector2>() * speed;
 
         rb.linearVelocityX = movement.action.ReadValue<Vector2>().x * speed;
-        if (Input.GetKeyDown(KeyCode.Space) && rb.linearVelocityY == 0)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Z)) && rb.linearVelocityY == 0)
         {
             rb.linearVelocityY = 15;
         }
-
-
 
         if (GameObject.Find("Sword(Clone)")) { rb.linearVelocity *= 0; }
 
