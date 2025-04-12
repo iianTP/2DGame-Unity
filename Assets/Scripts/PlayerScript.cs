@@ -58,13 +58,21 @@ public class PlayerScript : MonoBehaviour
         Instantiate(sword);
     }
 
+    private void t(InputAction.CallbackContext context)
+    {
+        Debug.Log("asdiugh");
+    }
+
     private void OnEnable()
     {
+        interaction.action.performed += t;
         attack.action.performed += action;
+        
     }
 
     private void OnDisable()
     {
+        interaction.action.performed -= t;
         attack.action.performed -= action;
     }
 
