@@ -7,7 +7,7 @@ public class PassageScript : MonoBehaviour
     public Transform playerTransform;
     public BoxCollider2D playerCollider;
     private Vector3 position = new Vector3(0,10,0);
-    private float movePlayer = 0.5f;
+    private float movePlayer = 1;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

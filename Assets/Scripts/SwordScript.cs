@@ -10,7 +10,7 @@ public class SwordScript : MonoBehaviour
     float timer = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+   /* void Start()
     {
         player = GameObject.Find("Player");
         playerTransform = player.GetComponent<Transform>();
@@ -22,7 +22,7 @@ public class SwordScript : MonoBehaviour
     {
         setDirection();
         yielding();
-    }
+    }*/
 
     void setDirection()
     {
