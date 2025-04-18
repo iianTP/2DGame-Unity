@@ -333,6 +333,7 @@ MonoBehaviour:
   movement: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   interaction: {fileID: 1781555164194001046, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   attack: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  jump: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   sword: {fileID: 78181549178885790, guid: f181cf6fe76156d49b9c7315bcc76f36, type: 3}
   wallTransform: {fileID: 1754449823}
   groundTransform: {fileID: 484393062}
@@ -344,8 +345,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   speed: 8
-  jump: 13
+  jumpForce: 13
   direction: down
+  wallJumpForce: {x: 10, y: 13}
+  wallJumpTime: 10
 --- !u!1 &268592477
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,7 +8,7 @@ public class PlayerScript : MonoBehaviour
     public Rigidbody2D rb;
     public BoxCollider2D bc2d;
 
-    public InputActionReference movement, interaction, attack;
+    public InputActionReference movement, interaction, attack, jump;
 
     public GameObject sword;
     public Transform wallTransform;
@@ -18,36 +18,79 @@ public class PlayerScript : MonoBehaviour
     public LayerMask extraJumpLayer;
 
     public float speed;
-    public float jump;
+    public float jumpForce;
     public string direction;
+
+    private bool isWallJumping = false;
+    private float wallJumpCounter = 0;
+    private float wallJumpDirection;
+    public Vector2 wallJumpForce;
+    public float wallJumpTime;
 
     void Update()
     {
         PlayerMovement();
-        UpdateDirection();
+        
         WallSlide();
+
+        UpdateDirection();
     }
 
 
     void PlayerMovement()
     {
 
-
-        rb.linearVelocityX = movement.action.ReadValue<Vector2>().x * speed;
+        if (!isWallJumping)
+        {
+            rb.linearVelocityX = movement.action.ReadValue<Vector2>().x * speed;
+        }
+        
         Jump();
-
-        if (GameObject.Find("Sword(Clone)")) { rb.linearVelocity *= 0; }
+        if (IsOnWall() && !IsOnGround())
+        {
+            WallJump();
+        }
 
     }
 
     void Jump()
     {
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Z)) && 
-            (rb.linearVelocityY == 0 || IsInExtraJump()))
+
+        if (jump.action.triggered && (IsOnGround() || IsInExtraJump()) && !IsOnWall())
         {
-            rb.linearVelocityY = jump;
+            rb.linearVelocityY = jumpForce;
         }
 
+    }
+
+    void WallJump()
+    {
+        if (IsOnWall())
+        {
+            isWallJumping = false;
+            wallJumpDirection = -transform.localScale.x;
+            wallJumpCounter = wallJumpTime;
+            CancelInvoke(nameof(StopWallJump));
+        }
+        else if (isWallJumping)
+        {
+            wallJumpCounter -= Time.deltaTime;
+        }
+
+        if (jump.action.triggered && wallJumpCounter > 0)
+        {
+            isWallJumping = true;
+            rb.linearVelocity = new Vector2(wallJumpDirection*wallJumpForce.x,wallJumpForce.y);
+            wallJumpCounter = 0;
+            Invoke(nameof(StopWallJump), 0.1f);
+        }
+
+    }
+
+    void StopWallJump()
+    {
+        isWallJumping = false;
+        wallJumpCounter = 0;
     }
 
     void UpdateDirection()
@@ -88,31 +131,5 @@ public class PlayerScript : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocityX, Mathf.Clamp(rb.linearVelocityY, -2f, float.MaxValue));
         }
     }
-
-   /* private void Action(InputAction.CallbackContext context)
-    {
-        Instantiate(sword);
-    }
-
-    private void T(InputAction.CallbackContext context)
-    {
-
-    }
-
-    private void OnEnable()
-    {
-        interaction.action.performed += T;
-        attack.action.performed += Action;
-        
-    }
-
-    private void OnDisable()
-    {
-        interaction.action.performed -= T;
-        attack.action.performed -= Action;
-    }
-   */
-    
-
 
 }
