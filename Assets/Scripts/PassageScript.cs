@@ -5,7 +5,6 @@ public class PassageScript : MonoBehaviour
 
     public Transform cameraTransform;
     public Transform playerTransform;
-    public BoxCollider2D playerCollider;
     private Vector3 position = new Vector3(0,10,0);
     private float movePlayer = 1;
 
