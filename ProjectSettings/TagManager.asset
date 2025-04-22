@@ -3,19 +3,23 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Wall
+  - Floor
+  - Roof
+  - Platform
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Camera
   - Water
   - UI
   - ExtraJump
   - GravityShifter1
   - Player
   - Plataform
-  - 
+  - Death
   - 
   - 
   - 

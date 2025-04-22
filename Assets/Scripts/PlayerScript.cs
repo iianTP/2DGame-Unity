@@ -16,9 +16,11 @@ public class PlayerScript : MonoBehaviour
     public LayerMask plataformLayer;
     public LayerMask extraJumpLayer;
     public LayerMask gravityShifter1Layer;
+    public LayerMask deathLayer;
 
     public float speedAbs;
     public float jumpForceAbs;
+    public Vector3 spawnPoint;
     private float speed;
     private float jumpForce;
     private string gravity = "down";
@@ -26,11 +28,8 @@ public class PlayerScript : MonoBehaviour
     private bool isWallJumping = false;
     private float wallJumpCounter = 0;
     private float wallJumpDirection;
-
     public Vector2 wjForceAbs;
-
     private Vector2 wallJumpForce;
-
     public float wallJumpTime;
 
     void Start()
@@ -42,16 +41,10 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
-
         PlayerMovement();
-
-
-        //WallSlide();
-
-
+        Death();
         UpdateDirection();
     }
-
 
     void PlayerMovement()
     {
@@ -79,7 +72,7 @@ public class PlayerScript : MonoBehaviour
     void Jump()
     {
 
-        if (jump.action.triggered && (IsOnGround() || IsInGenericObject(extraJumpLayer)) /*&& !IsOnWall()*/)
+        if (jump.action.triggered && (IsOnGround() || IsInGenericObject(1,1,extraJumpLayer)) && !(IsOnWall() && !IsOnGround()))
         {
             if (gravity == "up" || gravity == "down")
             {
@@ -93,11 +86,18 @@ public class PlayerScript : MonoBehaviour
 
     }
 
+    void Death()
+    {
+        if (IsInGenericObject(0.5f,0.5f,deathLayer))
+        {
+            transform.position = spawnPoint;
+            GravityShift("down");
+        }
+    }
     void WallJump()
     {
-        if (IsOnWall())
+        if (IsOnWall() && !isWallJumping)
         {
-            isWallJumping = false;
             wallJumpDirection = -transform.localScale.x;
             wallJumpCounter = wallJumpTime;
             CancelInvoke(nameof(StopWallJump));
@@ -132,14 +132,13 @@ public class PlayerScript : MonoBehaviour
         wallJumpCounter = 0;
     }
 
-
     public void GravityShift(string direction)
     {
         Vector2 gravityDirection = new Vector2(0,-9.81f);
         switch (direction)
         {
             case "up":
-                if (gravity == "up") { break; }
+                if (gravity == "up") { return; }
                 gravityDirection = new Vector2(0, 9.81f);
                 speed = speedAbs;
                 jumpForce = -jumpForceAbs;
@@ -155,7 +154,7 @@ public class PlayerScript : MonoBehaviour
 
             case "down":
 
-                if (gravity == "down") { break; }
+                if (gravity == "down") { return; }
                 gravityDirection = new Vector2(0, -9.81f);
                 speed = speedAbs;
                 jumpForce = jumpForceAbs;
@@ -169,7 +168,7 @@ public class PlayerScript : MonoBehaviour
                 break;
 
             case "left":
-                if (gravity == "left") { break; }
+                if (gravity == "left") { return; }
                 gravityDirection = new Vector2(-9.81f, 0);
 
                 speed = -speedAbs;
@@ -185,7 +184,7 @@ public class PlayerScript : MonoBehaviour
                 break;
 
             case "right":
-                if (gravity == "right") { break; }
+                if (gravity == "right") { return; }
                 gravityDirection = new Vector2(9.81f, 0);
                 speed = speedAbs;
                 jumpForce = -jumpForceAbs;
@@ -227,9 +226,9 @@ public class PlayerScript : MonoBehaviour
         return Physics2D.OverlapCircle(wallTransform.position, 0.01f, plataformLayer);
     }
 
-    bool IsInGenericObject(LayerMask layer)
+    bool IsInGenericObject(float sizeX, float sizeY, LayerMask layer)
     {
-        return Physics2D.OverlapBox(genericTransform.position, new Vector2(1, 1), 0, layer);
+        return Physics2D.OverlapBox(genericTransform.position, new Vector2(sizeX, sizeY), 0, layer);
     }
 
 }
