@@ -5,78 +5,230 @@ using UnityEngine.InputSystem;
 public class PlayerScript : MonoBehaviour
 {
 
-    
     public Rigidbody2D rb;
+    public BoxCollider2D bc2d;
 
-    public InputActionReference movement, interaction, attack;
+    public InputActionReference movement, interaction, attack, jump;
 
-    public GameObject sword;
+    public Transform wallTransform;
+    public Transform groundTransform;
+    public Transform genericTransform;
+    public LayerMask plataformLayer;
+    public LayerMask extraJumpLayer;
+    public LayerMask gravityShifter1Layer;
+    public LayerMask deathLayer;
 
-    public float speed;
-    public string direction;
+    public float speedAbs;
+    public float jumpForceAbs;
+    public Vector3 spawnPoint;
+    private float speed;
+    private float jumpForce;
+    private string gravity = "down";
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private bool isWallJumping = false;
+    private float wallJumpCounter = 0;
+    private float wallJumpDirection;
+    public Vector2 wjForceAbs;
+    private Vector2 wallJumpForce;
+    public float wallJumpTime;
+
     void Start()
     {
-        
+        speed = speedAbs;
+        jumpForce = jumpForceAbs;
+        wallJumpForce = wjForceAbs;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        playerMovement();
-        updateDirection();
+        PlayerMovement();
+        Death();
+        UpdateDirection();
     }
 
-
-    void playerMovement()
+    void PlayerMovement()
     {
 
-        rb.linearVelocity = movement.action.ReadValue<Vector2>() * speed;
-
-        if (GameObject.Find("Sword(Clone)")) { rb.linearVelocity *= 0; }
-
-    }
-
-    void updateDirection()
-    {
-        
-
-        if (rb.linearVelocityX != 0)
+        if (!isWallJumping)
         {
-            direction = (rb.linearVelocityX < 0) ? "left" : "right";
+            if (gravity == "up" || gravity == "down")
+            {
+                rb.linearVelocityX = movement.action.ReadValue<Vector2>().x * speed;
+            }
+            if (gravity == "left" || gravity == "right")
+            {
+                rb.linearVelocityY = movement.action.ReadValue<Vector2>().x * speed;
+            }
         }
 
-        if (rb.linearVelocityY != 0)
+        Jump();
+        if (IsOnWall() && !IsOnGround())
         {
-            direction = (rb.linearVelocityY < 0) ? "down" : "up";
+            WallJump();
+        }
+     
+    }
+
+    void Jump()
+    {
+
+        if (jump.action.triggered && (IsOnGround() || IsInGenericObject(1,1,extraJumpLayer)) && !(IsOnWall() && !IsOnGround()))
+        {
+            if (gravity == "up" || gravity == "down")
+            {
+                rb.linearVelocityY = jumpForce;
+            }
+            if (gravity == "left" || gravity == "right")
+            {
+                rb.linearVelocityX = jumpForce;
+            }
+        }
+
+    }
+
+    void Death()
+    {
+        if (IsInGenericObject(0.5f,0.5f,deathLayer))
+        {
+            transform.position = spawnPoint;
+            GravityShift("down");
         }
     }
-
-    private void action(InputAction.CallbackContext context)
+    void WallJump()
     {
-        Instantiate(sword);
+        if (IsOnWall() && !isWallJumping)
+        {
+            wallJumpDirection = -transform.localScale.x;
+            wallJumpCounter = wallJumpTime;
+            CancelInvoke(nameof(StopWallJump));
+        }
+        else if (isWallJumping)
+        {
+            wallJumpCounter -= Time.deltaTime;
+        }
+
+        if (jump.action.triggered && wallJumpCounter > 0)
+        {
+            isWallJumping = true;
+
+            if (gravity == "up" || gravity == "down")
+            {
+                rb.linearVelocity = new Vector2(wallJumpDirection * wallJumpForce.x, wallJumpForce.y);
+            }
+            if (gravity == "left" || gravity == "right")
+            {
+                rb.linearVelocity = new Vector2(wallJumpForce.y, wallJumpDirection * wallJumpForce.x);
+            }
+
+            wallJumpCounter = 0;
+            Invoke(nameof(StopWallJump), 0.1f);
+        }
+
     }
 
-    private void t(InputAction.CallbackContext context)
+    void StopWallJump()
     {
-        Debug.Log("asdiugh");
+        isWallJumping = false;
+        wallJumpCounter = 0;
     }
 
-    private void OnEnable()
+    public void GravityShift(string direction)
     {
-        interaction.action.performed += t;
-        attack.action.performed += action;
-        
+        Vector2 gravityDirection = new Vector2(0,-9.81f);
+        switch (direction)
+        {
+            case "up":
+                if (gravity == "up") { return; }
+                gravityDirection = new Vector2(0, 9.81f);
+                speed = speedAbs;
+                jumpForce = -jumpForceAbs;
+
+
+                wallJumpForce.x = wjForceAbs.x;
+                wallJumpForce.y = -wjForceAbs.y;
+
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                transform.localScale = new Vector3(0.5f, -0.5f, 0.5f);
+
+                break;
+
+            case "down":
+
+                if (gravity == "down") { return; }
+                gravityDirection = new Vector2(0, -9.81f);
+                speed = speedAbs;
+                jumpForce = jumpForceAbs;
+
+                wallJumpForce.x = wjForceAbs.x;
+                wallJumpForce.y = wjForceAbs.y;
+
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+                break;
+
+            case "left":
+                if (gravity == "left") { return; }
+                gravityDirection = new Vector2(-9.81f, 0);
+
+                speed = -speedAbs;
+                jumpForce = jumpForceAbs;
+
+                wallJumpForce.x = wjForceAbs.x;
+                wallJumpForce.y = wjForceAbs.y;
+
+
+                transform.rotation = Quaternion.Euler(0,0,-90);
+                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+                break;
+
+            case "right":
+                if (gravity == "right") { return; }
+                gravityDirection = new Vector2(9.81f, 0);
+                speed = speedAbs;
+                jumpForce = -jumpForceAbs;
+
+                wallJumpForce.x = wjForceAbs.x;
+                wallJumpForce.y = -wjForceAbs.y;
+
+                transform.rotation = Quaternion.Euler(0, 0, 90);
+                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+                break;
+        }
+
+        Physics2D.gravity = gravityDirection;
+        gravity = direction;
+
     }
 
-    private void OnDisable()
+    void UpdateDirection()
     {
-        interaction.action.performed -= t;
-        attack.action.performed -= action;
+
+        Vector3 newScale = transform.localScale;
+            
+        if ((Input.GetKeyDown(KeyCode.LeftArrow) && newScale.x > 0) || (Input.GetKeyDown(KeyCode.RightArrow) && newScale.x < 0))
+        { 
+            newScale.x *= -1; 
+        }
+        transform.localScale = newScale;
+
     }
 
-    
+    bool IsOnGround()
+    {
+        return Physics2D.OverlapCircle(groundTransform.position, 0.01f, plataformLayer);
+    }
 
+    bool IsOnWall()
+    {
+        return Physics2D.OverlapCircle(wallTransform.position, 0.01f, plataformLayer);
+    }
+
+    bool IsInGenericObject(float sizeX, float sizeY, LayerMask layer)
+    {
+        return Physics2D.OverlapBox(genericTransform.position, new Vector2(sizeX, sizeY), 0, layer);
+    }
 
 }
