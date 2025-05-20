@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -32,6 +33,18 @@ public class PlayerScript : MonoBehaviour
     private Vector2 wallJumpForce;
     public float wallJumpTime;
 
+
+    public bool hasDoubleJump;
+    public bool hasDash;
+    public bool hasAttack;
+
+    public bool isDoubleJumping = false;
+
+    public bool isDashing = false;
+    public float dashForce = 15f;
+
+    public bool isAttacking = false;
+
     void Start()
     {
         speed = speedAbs;
@@ -41,8 +54,14 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
+        if (isDashing) { return; }
+        
         PlayerMovement();
+
+        if (interaction.action.triggered && hasDash) { StartCoroutine(Dash()); }
+
         Death();
+
         UpdateDirection();
     }
 
@@ -62,6 +81,8 @@ public class PlayerScript : MonoBehaviour
         }
 
         Jump();
+        DoubleJump(); 
+
         if (IsOnWall() && !IsOnGround())
         {
             WallJump();
@@ -93,6 +114,49 @@ public class PlayerScript : MonoBehaviour
             transform.position = spawnPoint;
             GravityShift("down");
         }
+    }
+
+    IEnumerator Dash()
+    {
+
+        float originalGravity = rb.gravityScale;
+        float direction = transform.localScale.x/Math.Abs(transform.localScale.x);
+        rb.gravityScale = 0f;
+        isDashing = true;
+
+        if (gravity == "up" || gravity == "down")
+        {
+            rb.linearVelocityX = dashForce * direction;
+            rb.linearVelocityY = 0;
+        }
+        if (gravity == "left" || gravity == "right")
+        {
+            rb.linearVelocityY = dashForce * direction;
+            rb.linearVelocityX = 0;
+        }
+
+        yield return new WaitForSeconds(0.2f);
+        rb.gravityScale = originalGravity;
+        isDashing = false;
+        yield return new WaitForSeconds(2f);
+
+    }
+
+    void DoubleJump()
+    {
+        if (hasDoubleJump && jump.action.triggered && !isDoubleJumping && !IsOnGround())
+        {
+            if (gravity == "up" || gravity == "down")
+            {
+                rb.linearVelocityY = jumpForce;
+            }
+            if (gravity == "left" || gravity == "right")
+            {
+                rb.linearVelocityX = jumpForce;
+            }
+            isDoubleJumping = true;
+        }
+        if (IsOnGround()) { isDoubleJumping = false; }
     }
     void WallJump()
     {
@@ -207,10 +271,10 @@ public class PlayerScript : MonoBehaviour
     {
 
         Vector3 newScale = transform.localScale;
-            
-        if ((Input.GetKeyDown(KeyCode.LeftArrow) && newScale.x > 0) || (Input.GetKeyDown(KeyCode.RightArrow) && newScale.x < 0))
-        { 
-            newScale.x *= -1; 
+
+        if (movement.action.ReadValue<Vector2>().x != 0)
+        {
+            newScale.x = 0.5f * movement.action.ReadValue<Vector2>().x;
         }
         transform.localScale = newScale;
 
