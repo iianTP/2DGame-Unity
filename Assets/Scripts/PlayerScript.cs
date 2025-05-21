@@ -147,6 +147,7 @@ public class PlayerScript : MonoBehaviour
     public void GravityShift(string direction)
     {
         Vector2 gravityDirection = new Vector2(0,-9.81f);
+        Vector3 newScale = new Vector3(0.5f, 1f, 1f);
         switch (direction)
         {
             case "up":
@@ -157,7 +158,8 @@ public class PlayerScript : MonoBehaviour
 
 
                 transform.rotation = Quaternion.Euler(0, 0, 0);
-                transform.localScale = new Vector3(0.5f, -0.5f, 0.5f);
+                newScale.y -= 2 * newScale.y;
+                transform.localScale = newScale;
 
                 break;
 
@@ -169,7 +171,7 @@ public class PlayerScript : MonoBehaviour
                 jumpForce = jumpForceAbs;
 
                 transform.rotation = Quaternion.Euler(0, 0, 0);
-                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                transform.localScale = newScale;
 
                 break;
 
@@ -181,7 +183,7 @@ public class PlayerScript : MonoBehaviour
                 jumpForce = jumpForceAbs;
 
                 transform.rotation = Quaternion.Euler(0,0,-90);
-                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                transform.localScale = newScale;
 
                 break;
 
@@ -192,7 +194,7 @@ public class PlayerScript : MonoBehaviour
                 jumpForce = -jumpForceAbs;
 
                 transform.rotation = Quaternion.Euler(0, 0, 90);
-                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                transform.localScale = newScale;
 
                 break;
         }
