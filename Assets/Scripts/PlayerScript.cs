@@ -19,20 +19,13 @@ public class PlayerScript : MonoBehaviour
     public LayerMask gravityShifter1Layer;
     public LayerMask deathLayer;
 
+    public float energy;
     public float speedAbs;
     public float jumpForceAbs;
     public Vector3 spawnPoint;
     private float speed;
     private float jumpForce;
     private string gravity = "down";
-
-    private bool isWallJumping = false;
-    private float wallJumpCounter = 0;
-    private float wallJumpDirection;
-    public Vector2 wjForceAbs;
-    private Vector2 wallJumpForce;
-    public float wallJumpTime;
-
 
     public bool hasDoubleJump;
     public bool hasDash;
@@ -49,7 +42,6 @@ public class PlayerScript : MonoBehaviour
     {
         speed = speedAbs;
         jumpForce = jumpForceAbs;
-        wallJumpForce = wjForceAbs;
     }
 
     void Update()
@@ -68,32 +60,24 @@ public class PlayerScript : MonoBehaviour
     void PlayerMovement()
     {
 
-        if (!isWallJumping)
+        if (gravity == "up" || gravity == "down")
         {
-            if (gravity == "up" || gravity == "down")
-            {
-                rb.linearVelocityX = movement.action.ReadValue<Vector2>().x * speed;
-            }
-            if (gravity == "left" || gravity == "right")
-            {
-                rb.linearVelocityY = movement.action.ReadValue<Vector2>().x * speed;
-            }
+            rb.linearVelocityX = movement.action.ReadValue<Vector2>().x * speed;
         }
-
+        if (gravity == "left" || gravity == "right")
+        {
+            rb.linearVelocityY = movement.action.ReadValue<Vector2>().x * speed;
+        }
+        
         Jump();
         DoubleJump(); 
 
-        if (IsOnWall() && !IsOnGround())
-        {
-            WallJump();
-        }
-     
     }
 
     void Jump()
     {
 
-        if (jump.action.triggered && (IsOnGround() || IsInGenericObject(1,1,extraJumpLayer)) && !(IsOnWall() && !IsOnGround()))
+        if (jump.action.triggered && (IsOnGround() || IsInGenericObject(1,1,extraJumpLayer)))
         {
             if (gravity == "up" || gravity == "down")
             {
@@ -158,43 +142,7 @@ public class PlayerScript : MonoBehaviour
         }
         if (IsOnGround()) { isDoubleJumping = false; }
     }
-    void WallJump()
-    {
-        if (IsOnWall() && !isWallJumping)
-        {
-            wallJumpDirection = -transform.localScale.x;
-            wallJumpCounter = wallJumpTime;
-            CancelInvoke(nameof(StopWallJump));
-        }
-        else if (isWallJumping)
-        {
-            wallJumpCounter -= Time.deltaTime;
-        }
 
-        if (jump.action.triggered && wallJumpCounter > 0)
-        {
-            isWallJumping = true;
-
-            if (gravity == "up" || gravity == "down")
-            {
-                rb.linearVelocity = new Vector2(wallJumpDirection * wallJumpForce.x, wallJumpForce.y);
-            }
-            if (gravity == "left" || gravity == "right")
-            {
-                rb.linearVelocity = new Vector2(wallJumpForce.y, wallJumpDirection * wallJumpForce.x);
-            }
-
-            wallJumpCounter = 0;
-            Invoke(nameof(StopWallJump), 0.1f);
-        }
-
-    }
-
-    void StopWallJump()
-    {
-        isWallJumping = false;
-        wallJumpCounter = 0;
-    }
 
     public void GravityShift(string direction)
     {
@@ -208,9 +156,6 @@ public class PlayerScript : MonoBehaviour
                 jumpForce = -jumpForceAbs;
 
 
-                wallJumpForce.x = wjForceAbs.x;
-                wallJumpForce.y = -wjForceAbs.y;
-
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 transform.localScale = new Vector3(0.5f, -0.5f, 0.5f);
 
@@ -222,9 +167,6 @@ public class PlayerScript : MonoBehaviour
                 gravityDirection = new Vector2(0, -9.81f);
                 speed = speedAbs;
                 jumpForce = jumpForceAbs;
-
-                wallJumpForce.x = wjForceAbs.x;
-                wallJumpForce.y = wjForceAbs.y;
 
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
@@ -238,10 +180,6 @@ public class PlayerScript : MonoBehaviour
                 speed = -speedAbs;
                 jumpForce = jumpForceAbs;
 
-                wallJumpForce.x = wjForceAbs.x;
-                wallJumpForce.y = wjForceAbs.y;
-
-
                 transform.rotation = Quaternion.Euler(0,0,-90);
                 transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
@@ -252,9 +190,6 @@ public class PlayerScript : MonoBehaviour
                 gravityDirection = new Vector2(9.81f, 0);
                 speed = speedAbs;
                 jumpForce = -jumpForceAbs;
-
-                wallJumpForce.x = wjForceAbs.x;
-                wallJumpForce.y = -wjForceAbs.y;
 
                 transform.rotation = Quaternion.Euler(0, 0, 90);
                 transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
@@ -283,11 +218,6 @@ public class PlayerScript : MonoBehaviour
     bool IsOnGround()
     {
         return Physics2D.OverlapCircle(groundTransform.position, 0.01f, plataformLayer);
-    }
-
-    bool IsOnWall()
-    {
-        return Physics2D.OverlapCircle(wallTransform.position, 0.01f, plataformLayer);
     }
 
     bool IsInGenericObject(float sizeX, float sizeY, LayerMask layer)
