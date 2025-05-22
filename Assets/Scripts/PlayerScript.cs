@@ -19,6 +19,12 @@ public class PlayerScript : MonoBehaviour
     public LayerMask gravityShifter1Layer;
     public LayerMask deathLayer;
 
+    private bool isWallJumping = false;
+    private float wallJumpDirection;
+    public Vector2 wjForceAbs;
+    private Vector2 wallJumpForce;
+    public float wallJumpTime;
+
     public float energy;
     public float speedAbs;
     public float jumpForceAbs;
@@ -42,13 +48,17 @@ public class PlayerScript : MonoBehaviour
     {
         speed = speedAbs;
         jumpForce = jumpForceAbs;
+        wallJumpForce = wjForceAbs;
     }
 
     void Update()
     {
         if (isDashing) { return; }
-        
+        if (isWallJumping) { return; }
+
         PlayerMovement();
+
+        if (IsOnWall() && !IsOnGround() && jump.action.triggered && movement.action.ReadValue<Vector2>().x != 0) { StartCoroutine(WallJump()); }
 
         if (interaction.action.triggered && hasDash) { StartCoroutine(Dash()); }
 
@@ -69,15 +79,18 @@ public class PlayerScript : MonoBehaviour
             rb.linearVelocityY = movement.action.ReadValue<Vector2>().x * speed;
         }
         
+        
         Jump();
-        DoubleJump(); 
+        DoubleJump();
+
+        
 
     }
 
     void Jump()
     {
 
-        if (jump.action.triggered && (IsOnGround() || IsInGenericObject(1,1,extraJumpLayer)))
+        if (jump.action.triggered && (IsOnGround() || IsInGenericObject(1,1,extraJumpLayer)) && !(IsOnWall() && !IsOnGround()))
         {
             if (gravity == "up" || gravity == "down")
             {
@@ -143,6 +156,29 @@ public class PlayerScript : MonoBehaviour
         if (IsOnGround()) { isDoubleJumping = false; }
     }
 
+    IEnumerator WallJump()
+    {
+
+        isWallJumping = true;
+        wallJumpDirection = -transform.localScale.x;
+
+        if (gravity == "up" || gravity == "down")
+        {
+            rb.linearVelocity = new Vector2(wallJumpDirection * wallJumpForce.x, wallJumpForce.y);
+        }
+        if (gravity == "left" || gravity == "right")
+        {
+            rb.linearVelocity = new Vector2(wallJumpForce.y, wallJumpDirection * wallJumpForce.x);
+        }
+
+        yield return new WaitForSeconds(wallJumpTime);
+
+        isWallJumping = false;
+
+        yield return new WaitForSeconds(0.1f);
+
+    }
+
 
     public void GravityShift(string direction)
     {
@@ -156,6 +192,8 @@ public class PlayerScript : MonoBehaviour
                 speed = speedAbs;
                 jumpForce = -jumpForceAbs;
 
+                wallJumpForce.x = wjForceAbs.x;
+                wallJumpForce.y = -wjForceAbs.y;
 
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 newScale.y -= 2 * newScale.y;
@@ -170,6 +208,9 @@ public class PlayerScript : MonoBehaviour
                 speed = speedAbs;
                 jumpForce = jumpForceAbs;
 
+                wallJumpForce.x = wjForceAbs.x;
+                wallJumpForce.y = wjForceAbs.y;
+
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 transform.localScale = newScale;
 
@@ -182,6 +223,9 @@ public class PlayerScript : MonoBehaviour
                 speed = -speedAbs;
                 jumpForce = jumpForceAbs;
 
+                wallJumpForce.x = wjForceAbs.x;
+                wallJumpForce.y = wjForceAbs.y;
+
                 transform.rotation = Quaternion.Euler(0,0,-90);
                 transform.localScale = newScale;
 
@@ -192,6 +236,9 @@ public class PlayerScript : MonoBehaviour
                 gravityDirection = new Vector2(9.81f, 0);
                 speed = speedAbs;
                 jumpForce = -jumpForceAbs;
+
+                wallJumpForce.x = wjForceAbs.x;
+                wallJumpForce.y = -wjForceAbs.y;
 
                 transform.rotation = Quaternion.Euler(0, 0, 90);
                 transform.localScale = newScale;
@@ -220,6 +267,11 @@ public class PlayerScript : MonoBehaviour
     bool IsOnGround()
     {
         return Physics2D.OverlapCircle(groundTransform.position, 0.01f, plataformLayer);
+    }
+
+    bool IsOnWall()
+    {
+        return Physics2D.OverlapCircle(wallTransform.position, 0.01f, plataformLayer);
     }
 
     bool IsInGenericObject(float sizeX, float sizeY, LayerMask layer)

@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using UnityEngine;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class CameraScript : MonoBehaviour
 {
@@ -13,6 +16,7 @@ public class CameraScript : MonoBehaviour
     private void LateUpdate()
     {
         CameraMovement();
+
     }
 
     void CameraMovement()
