@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: grass 1
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
-  - {fileID: 1059134236056823944, guid: 0beb08219391bc3499910585a82e3dd3, type: 3}
-  - {fileID: 3326654631988974858, guid: 19dd169590028344b91ca68788741e6d, type: 3}
-  - {fileID: -2619292129846492883, guid: f02d20961bd25cc49bcaf8ffef4409b3, type: 3}
+  - {fileID: -7236261380977397308, guid: f989781ec6f94104d99e01bc47b65de7, type: 3}
+  - {fileID: 2721938645330709378, guid: 7ae5d9dbd5efaf549ab9c738ffb937c9, type: 3}
+  - {fileID: 1871565129459173725, guid: a6bd690fed4900344a3d563f4d629667, type: 3}
   m_MinSpeed: 4
   m_MaxSpeed: 5
   m_AnimationStartTime: 0

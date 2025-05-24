@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: dirt 1
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
-  - {fileID: -6669981197303651205, guid: a791fbf2e44789540a84d0eba1055a71, type: 3}
-  - {fileID: 3206849539478293743, guid: 727141cbdbed0a0418c44ac55f826b83, type: 3}
-  - {fileID: -8682739834879350637, guid: 38bac3fb71cbe7e4e86ee551062c9331, type: 3}
+  - {fileID: -5401163582792828764, guid: 54fbe1c137ee8a843b3d5f7296018522, type: 3}
+  - {fileID: 433504341329009071, guid: 216a2b2b25c3fd5468a102a957af6829, type: 3}
+  - {fileID: 1852397578141196375, guid: 15c7f100f1b20184593e905373c2608d, type: 3}
   m_MinSpeed: 4
   m_MaxSpeed: 5
   m_AnimationStartTime: 0
