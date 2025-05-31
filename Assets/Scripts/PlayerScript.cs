@@ -6,10 +6,15 @@ using UnityEngine.InputSystem;
 public class PlayerScript : MonoBehaviour
 {
 
+    public static PlayerScript instance;
+
     public Rigidbody2D rb;
     public BoxCollider2D bc2d;
 
     public InputActionReference movement, interaction, attack, jump;
+
+    public float coyoteTime;
+    public float coyoteTimeCounter;
 
     public Transform wallTransform;
     public Transform groundTransform;
@@ -49,22 +54,42 @@ public class PlayerScript : MonoBehaviour
         speed = speedAbs;
         jumpForce = jumpForceAbs;
         wallJumpForce = wjForceAbs;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     void Update()
     {
+
+        Death();
+
         if (isDashing) { return; }
         if (isWallJumping) { return; }
 
-        PlayerMovement();
+        if (IsOnGround()) {  coyoteTimeCounter = coyoteTime; }
+        else { coyoteTimeCounter -= Time.deltaTime; }
+
+            PlayerMovement();
 
         if (IsOnWall() && !IsOnGround() && jump.action.triggered && movement.action.ReadValue<Vector2>().x != 0) { StartCoroutine(WallJump()); }
 
         if (interaction.action.triggered && hasDash) { StartCoroutine(Dash()); }
 
-        Death();
+        
 
         UpdateDirection();
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            SceneControllerScript.instance.LoadLevel(0);
+        }
     }
 
     void PlayerMovement()
@@ -79,18 +104,14 @@ public class PlayerScript : MonoBehaviour
             rb.linearVelocityY = movement.action.ReadValue<Vector2>().x * speed;
         }
         
-        
-        Jump();
         DoubleJump();
-
-        
 
     }
 
-    void Jump()
+    public void Jump(InputAction.CallbackContext context)
     {
 
-        if (jump.action.triggered && (IsOnGround() || IsInGenericObject(1,1,extraJumpLayer)) && !(IsOnWall() && !IsOnGround()))
+        if (coyoteTimeCounter > 0f && context.performed)
         {
             if (gravity == "up" || gravity == "down")
             {
@@ -100,6 +121,19 @@ public class PlayerScript : MonoBehaviour
             {
                 rb.linearVelocityX = jumpForce;
             }
+        }
+
+        if (context.canceled && !IsOnGround())
+        {
+            if ((gravity == "up" && rb.linearVelocityY < 0f) || (gravity == "down" && rb.linearVelocityY > 0f))
+            {
+                rb.linearVelocityY *= 0.5f;
+            }
+            if ( (gravity == "left" && rb.linearVelocityX > 0f) || (gravity == "right" && rb.linearVelocityX < 0f))
+            {
+                rb.linearVelocityX *= 0.5f;
+            }
+            coyoteTimeCounter = 0f;
         }
 
     }
@@ -141,7 +175,7 @@ public class PlayerScript : MonoBehaviour
 
     void DoubleJump()
     {
-        if (hasDoubleJump && jump.action.triggered && !isDoubleJumping && !IsOnGround())
+        if (coyoteTimeCounter <= 0 && hasDoubleJump && jump.action.triggered && !isDoubleJumping && !IsOnGround())
         {
             if (gravity == "up" || gravity == "down")
             {
@@ -266,7 +300,7 @@ public class PlayerScript : MonoBehaviour
 
     bool IsOnGround()
     {
-        return Physics2D.OverlapCircle(groundTransform.position, 0.01f, plataformLayer);
+        return Physics2D.OverlapCircle(groundTransform.position, 0.1f, plataformLayer);
     }
 
     bool IsOnWall()

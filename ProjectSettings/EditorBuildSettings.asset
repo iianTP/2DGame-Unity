@@ -8,6 +8,51 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/level1/level1-1.unity
+    guid: 2e3bb13a5bd081347a521cd32a9268d8
+  - enabled: 1
+    path: Assets/Scenes/level1/level1-2.unity
+    guid: 13f3c687114af6a4eab52c4192ba3bb1
+  - enabled: 1
+    path: Assets/Scenes/level1/level1-3.unity
+    guid: 0f5ceb8299bde8748bc04a8cf17f716d
+  - enabled: 1
+    path: Assets/Scenes/level1/level1-4.unity
+    guid: 25b85d1a4a6bc5d469c1d23eb5ea9c51
+  - enabled: 1
+    path: Assets/Scenes/level1/level1-5.unity
+    guid: 43dcf418691357342a48c633449ec0e6
+  - enabled: 1
+    path: Assets/Scenes/level2/level2-1.unity
+    guid: 2596601f0c78add4ba480d09ed59af77
+  - enabled: 1
+    path: Assets/Scenes/level2/level2-2.unity
+    guid: 9b5ec02f1919b2547899842292176d73
+  - enabled: 1
+    path: Assets/Scenes/level2/level2-3.unity
+    guid: 2082a2d4b63671743b5365210a6b01eb
+  - enabled: 1
+    path: Assets/Scenes/level2/level2-4.unity
+    guid: 60f72e85f309f6441b6f4aade3ef8e44
+  - enabled: 1
+    path: Assets/Scenes/level2/level2-5.unity
+    guid: ee8e5ce83cfd6764bbe8d4907db7bab2
+  - enabled: 1
+    path: Assets/Scenes/level3/level3-1.unity
+    guid: cc3a7c40bf0f9df48abff2cb1b737b6c
+  - enabled: 1
+    path: Assets/Scenes/level3/level3-2.unity
+    guid: 69ebf2069c605bf42b01180b31f55d46
+  - enabled: 1
+    path: Assets/Scenes/level3/level3-3.unity
+    guid: e979a2d7c0848f54d9f067c473272188
+  - enabled: 1
+    path: Assets/Scenes/level3/level3-4.unity
+    guid: 8c229df7650c70941a51471865778a10
+  - enabled: 1
+    path: Assets/Scenes/level3/level3-5.unity
+    guid: d36cb81d6bf0a164a931845e7e7beb07
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -13,10 +13,14 @@ public class CameraScript : MonoBehaviour
 
     public Vector3 positionOffset;
 
+    private void Awake()
+    {
+        playerTransform = GameObject.Find("Player").transform;
+    }
+
     private void LateUpdate()
     {
         CameraMovement();
-
     }
 
     void CameraMovement()
