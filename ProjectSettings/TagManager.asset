@@ -8,6 +8,8 @@ TagManager:
   - Floor
   - Roof
   - Platform
+  - Enemie
+  - Projectile
   layers:
   - Default
   - TransparentFX

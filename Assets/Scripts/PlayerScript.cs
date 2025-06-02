@@ -10,6 +10,7 @@ public class PlayerScript : MonoBehaviour
 
     public Rigidbody2D rb;
     public BoxCollider2D bc2d;
+    public GameObject projectile;
 
     public InputActionReference movement, interaction, attack, jump;
 
@@ -82,7 +83,7 @@ public class PlayerScript : MonoBehaviour
 
         if (interaction.action.triggered && hasDash) { StartCoroutine(Dash()); }
 
-        
+        Shoot();
 
         UpdateDirection();
 
@@ -106,6 +107,14 @@ public class PlayerScript : MonoBehaviour
         
         DoubleJump();
 
+    }
+
+    void Shoot()
+    {
+        if (attack.action.triggered)
+        {
+            GameObject.Instantiate(projectile);
+        }
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -217,7 +226,7 @@ public class PlayerScript : MonoBehaviour
     public void GravityShift(string direction)
     {
         Vector2 gravityDirection = new Vector2(0,-9.81f);
-        Vector3 newScale = new Vector3(0.5f, 1f, 1f);
+        Vector3 newScale = new Vector3(0.5f, 0.5f, 0.5f);
         switch (direction)
         {
             case "up":
@@ -229,8 +238,10 @@ public class PlayerScript : MonoBehaviour
                 wallJumpForce.x = wjForceAbs.x;
                 wallJumpForce.y = -wjForceAbs.y;
 
+                dashForce = Math.Abs(dashForce);
+
                 transform.rotation = Quaternion.Euler(0, 0, 0);
-                newScale.y -= 2 * newScale.y;
+                newScale.y = - newScale.y;
                 transform.localScale = newScale;
 
                 break;
@@ -244,6 +255,8 @@ public class PlayerScript : MonoBehaviour
 
                 wallJumpForce.x = wjForceAbs.x;
                 wallJumpForce.y = wjForceAbs.y;
+
+                dashForce = Math.Abs(dashForce);
 
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 transform.localScale = newScale;
@@ -260,6 +273,8 @@ public class PlayerScript : MonoBehaviour
                 wallJumpForce.x = wjForceAbs.x;
                 wallJumpForce.y = wjForceAbs.y;
 
+                dashForce = -Math.Abs(dashForce);
+
                 transform.rotation = Quaternion.Euler(0,0,-90);
                 transform.localScale = newScale;
 
@@ -273,6 +288,8 @@ public class PlayerScript : MonoBehaviour
 
                 wallJumpForce.x = wjForceAbs.x;
                 wallJumpForce.y = -wjForceAbs.y;
+
+                dashForce = Math.Abs(dashForce);
 
                 transform.rotation = Quaternion.Euler(0, 0, 90);
                 transform.localScale = newScale;
