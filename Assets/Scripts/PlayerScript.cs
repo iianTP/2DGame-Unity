@@ -14,8 +14,10 @@ public class PlayerScript : MonoBehaviour
 
     public InputActionReference movement, interaction, attack, jump;
 
-    public float coyoteTime;
-    public float coyoteTimeCounter;
+    private float coyoteTime = 0.5f;
+    private float coyoteTimeCounter;
+
+    public int stage;
 
     public Transform wallTransform;
     public Transform groundTransform;
@@ -38,6 +40,7 @@ public class PlayerScript : MonoBehaviour
     private float speed;
     private float jumpForce;
     private string gravity = "down";
+    public float maxFallSpeed;
 
     public bool hasDoubleJump;
     public bool hasDash;
@@ -77,7 +80,9 @@ public class PlayerScript : MonoBehaviour
         if (IsOnGround()) {  coyoteTimeCounter = coyoteTime; }
         else { coyoteTimeCounter -= Time.deltaTime; }
 
-            PlayerMovement();
+        PlayerMovement();
+
+        FallSpeed();
 
         if (IsOnWall() && !IsOnGround() && jump.action.triggered && movement.action.ReadValue<Vector2>().x != 0) { StartCoroutine(WallJump()); }
 
@@ -89,7 +94,7 @@ public class PlayerScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            SceneControllerScript.instance.LoadLevel(0);
+            SceneControllerScript.instance.LoadLevel(9);
         }
     }
 
@@ -109,9 +114,23 @@ public class PlayerScript : MonoBehaviour
 
     }
 
+    void FallSpeed()
+    {
+        if ((gravity == "up" || gravity == "down") && Math.Abs(rb.linearVelocityY) > maxFallSpeed)
+        {
+            float sign = rb.linearVelocityY / Math.Abs(rb.linearVelocityY);
+            rb.linearVelocityY = sign * maxFallSpeed;
+        }
+        if ((gravity == "left" || gravity == "right") && Math.Abs(rb.linearVelocityX) > maxFallSpeed)
+        {
+            float sign = rb.linearVelocityX / Math.Abs(rb.linearVelocityX);
+            rb.linearVelocityX = sign * maxFallSpeed;
+        }
+    }
+
     void Shoot()
     {
-        if (attack.action.triggered)
+        if (attack.action.triggered && hasAttack)
         {
             GameObject.Instantiate(projectile);
         }
@@ -297,8 +316,11 @@ public class PlayerScript : MonoBehaviour
                 break;
         }
 
+
+
         Physics2D.gravity = gravityDirection;
         gravity = direction;
+        //rb.linearVelocity = Vector2.zero;
 
     }
 
