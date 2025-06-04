@@ -46,7 +46,6 @@ public class DrawingControllerScript : MonoBehaviour
         gate1.GetComponent<Animator>().SetBool("IsColored", true);
         gate1.GetComponent<LevelGateScript>().completed = true;
         playerScript.hasDoubleJump = true;
-        
     }
     void StartStage2()
     {

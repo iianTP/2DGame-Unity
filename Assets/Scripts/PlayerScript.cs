@@ -92,9 +92,24 @@ public class PlayerScript : MonoBehaviour
 
         UpdateDirection();
 
+
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SceneControllerScript.instance.LoadLevel(5);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SceneControllerScript.instance.LoadLevel(10);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SceneControllerScript.instance.LoadLevel(15);
+        }
+
         if (Input.GetKeyDown(KeyCode.B))
         {
-            SceneControllerScript.instance.LoadLevel(9);
+            SceneControllerScript.instance.LoadLevel(3);
         }
     }
 

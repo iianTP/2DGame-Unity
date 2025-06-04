@@ -18,6 +18,8 @@ public class EndLevelScript : MonoBehaviour
 
     public bool active;
 
+    public GameObject vignette;
+
     private string[] activeAnimations = new string[3] { "ActiveWindAnimation", "ActiveWaterAnimation", "ActiveSolarAnimation" };
 
     private void Awake()
@@ -36,12 +38,17 @@ public class EndLevelScript : MonoBehaviour
 
     IEnumerator Activate()
     {
-        yield return new WaitForSeconds(1f);
+
+        vignette.SetActive(true);
+
+        yield return new WaitForSeconds(0f);
 
         if (animator) animator.Play(activeAnimations[(SceneManager.GetActiveScene().buildIndex / 5) - 1]);
         backgroundSr.sprite = backgroundSprite;
         oldTiles.SetActive(false);
         newTiles.SetActive(true);
+
+
 
         yield return new WaitForSeconds(2f);
 
