@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviour
     public Rigidbody2D rb;
     public BoxCollider2D bc2d;
     public GameObject projectile;
+    public Animator animator;
 
     public InputActionReference movement, interaction, attack, jump;
 
@@ -91,6 +92,7 @@ public class PlayerScript : MonoBehaviour
         Shoot();
 
         UpdateDirection();
+        UpdateAnimation();
 
 
 
@@ -113,6 +115,16 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    void UpdateAnimation()
+    {
+        if (rb.linearVelocity.x != 0)
+        {
+            animator.Play($"Walk{stage}Animation");
+        } else
+        {
+            animator.Play($"Idle{stage}Animation");
+        }
+    }
     void PlayerMovement()
     {
 
