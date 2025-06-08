@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class DrawingControllerScript : MonoBehaviour
 {
@@ -20,8 +22,12 @@ public class DrawingControllerScript : MonoBehaviour
     public PlayerScript playerScript;
     public int stage;
 
+    public AudioSource audioSource;
+    public AudioResource finalSong;
+
     private void Awake()
     {
+
         playerScript = GameObject.Find("Player").GetComponent<PlayerScript>();
         stage = playerScript.stage;
 
@@ -66,6 +72,7 @@ public class DrawingControllerScript : MonoBehaviour
         tiles3.SetActive(true);
         tiles2.SetActive(false);
         playerScript.hasAttack = true;
+       // audioSource.resource;
     }
 
 }

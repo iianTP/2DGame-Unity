@@ -10,11 +10,18 @@ public class LevelGateScript : MonoBehaviour
     {
         if (!completed && collision.tag == "Player")
         {
-            SceneControllerScript.instance.LoadLevel(1 + 5*(level-1));
             if (level == 4)
             {
                 DontDestroyOnLoad(camera);
+                DontDestroyOnLoad(GameObject.Find("Music"));
             }
+            else
+            {
+                Destroy(GameObject.Find("Music"));
+            }
+                SceneControllerScript.instance.LoadLevel(1 + 5 * (level - 1));
+            
+
         }
     }
 
