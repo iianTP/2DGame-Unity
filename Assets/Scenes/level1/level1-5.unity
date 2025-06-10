@@ -345,6 +345,69 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b626554a1b2b2c45ad858548f9e29c6, type: 3}
+--- !u!1001 &1433427175
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.6948137
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.5606441
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765573590402252790, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_text
+      value: "Na sua frente, est\xE1 a primeira grande fonte. A chamamos de Moinho
+        de C\xE9u. Uma ferramenta incr\xEDvel que usa as for\xE7as invis\xEDveis
+        para girar e trazer a luz dos c\xE9us para nossa vila."
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794143109515065521, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_Name
+      value: Sign
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
 --- !u!1 &1498068798 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8497482403851152144, guid: 81108935da01e44448e6707881943c24, type: 3}
@@ -6581,3 +6644,4 @@ SceneRoots:
   - {fileID: 189338928}
   - {fileID: 1785969274}
   - {fileID: 8201926084603087972}
+  - {fileID: 1433427175}

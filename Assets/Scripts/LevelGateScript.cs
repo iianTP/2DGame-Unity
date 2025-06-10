@@ -19,7 +19,7 @@ public class LevelGateScript : MonoBehaviour
             {
                 Destroy(GameObject.Find("Music"));
             }
-                SceneControllerScript.instance.LoadLevel(1 + 5 * (level - 1));
+                SceneControllerScript.instance.LoadLevel(2 + 5 * (level - 1));
             
 
         }

@@ -7215,6 +7215,82 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b40027ef92d89204abbeaaa3b5e48685, type: 3}
+--- !u!1001 &1898050869
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 577754678668011122, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765573590402252790, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_text
+      value: "(Isso \xE9 algum texto de auto-ajuda??): \n\"Preso nos portais? Sem
+        estresse. Voc\xEA tem at\xE9 2030 para reanimar a energia de nosso mundo
+        (Meta 7.2). \xC9 tudo quest\xE3o de tempo e da boa vontade das for\xE7as
+        invis\xEDveis.\""
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765573590402252790, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_fontSize
+      value: 21.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765573590402252790, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 21.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8159261451372712997, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794143109515065521, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
+      propertyPath: m_Name
+      value: Sign
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a7ff557db10e3ad4aa70a0dda21d54db, type: 3}
 --- !u!1001 &2141173933
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7311,3 +7387,4 @@ SceneRoots:
   - {fileID: 1542334636}
   - {fileID: 597705259}
   - {fileID: 2141173933}
+  - {fileID: 1898050869}

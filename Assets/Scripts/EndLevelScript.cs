@@ -54,7 +54,7 @@ public class EndLevelScript : MonoBehaviour
 
         playerScript.stage = SceneManager.GetActiveScene().buildIndex / 5;
         Destroy(GameObject.Find("Music"));
-        SceneControllerScript.instance.LoadLevel(0);
+        SceneControllerScript.instance.LoadLevel(1);
 
         yield return new WaitForSeconds(0f);
     }

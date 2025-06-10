@@ -15,7 +15,7 @@ public class OpeningScript : MonoBehaviour
     {
         yield return new WaitForSeconds(16f);
 
-        SceneManager.LoadSceneAsync(0);
+        SceneManager.LoadSceneAsync(1);
 
         yield return new WaitForSeconds(0f);
     }

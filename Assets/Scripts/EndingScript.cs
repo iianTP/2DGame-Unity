@@ -19,7 +19,7 @@ public class EndingScript : MonoBehaviour
     IEnumerator WaitOpening()
     {
 
-        yield return new WaitForSeconds(13f);
+        yield return new WaitForSeconds(23f);
 
         Application.Quit();
 
